@@ -1,201 +1,191 @@
+# QuickShell-inspired glass layout for YASB 2.0.7. See README.md for controls.
+# Optional side islands: left: [launch_tools], right: [system_tools].
 watch_stylesheet: true
 watch_config: true
 debug: false
-
 komorebi:
-  start_command: "komorebic start"
-  stop_command: "komorebic stop"
-  reload_command: "komorebic stop && komorebic start"
-
+  start_command: komorebic start
+  stop_command: komorebic stop
+  reload_command: komorebic stop && komorebic start
 bars:
   status-bar:
     enabled: true
-    screens: ['*']
-    class_name: "yasb-bar"
+    screens:
+    - '*'
+    class_name: yasb-bar
     alignment:
-      position: "top"
+      position: top
+      align: center
     blur_effect:
       enabled: true
       dark_mode: true
-      round_corners: true
-      round_corners_type: "small"
-      border_color: "system"
+      round_corners: false
+      round_corners_type: small
+      border_color: None
     window_flags:
-      always_on_top: false
+      always_on_top: true
       windows_app_bar: true
+      hide_on_fullscreen: true
     dimensions:
-      width: "100%"
-      height: 34
+      width: 100%
+      height: 36
     padding:
-      top: 6
-      left: 8
-      bottom: 2
-      right: 8
+      top: 10
+      left: 12
+      bottom: 0
+      right: 12
     widgets:
-      left: ["wallpapers","memory","quick_launch", "taskbar"]
-      center: ["komorebi_workspaces","clock"]
-      right: ["traffic", "battery", "power_menu", "systray"]
-
+      left: []
+      center:
+      - workspaces_left
+      - control_center
+      - clock
+      - notifications
+      - workspaces_right
+      right: []
+    style: adaptive
+    style_adaptive_exclude:
+    - workspaces_left
+    - workspaces_right
 widgets:
   clock:
-    type: "yasb.clock.ClockWidget"
+    type: yasb.clock.ClockWidget
     options:
-      label: "<span>{icon}</span> <span>{alarm}</span> {%H:%M:%S}"
-      label_alt: "\uf017 {%d-%m-%y %H:%M:%S}"
-      locale: ""
+      label: '{%H:%M}'
+      label_alt: '{%H:%M:%S}'
+      locale: ''
       update_interval: 1000
       timezones: []
       tooltip: false
-      icons:
-        clock_01: "\udb85\udc3f"
-        clock_02: "\udb85\udc40"
-        clock_03: "\udb85\udc41"
-        clock_04: "\udb85\udc42"
-        clock_05: "\udb85\udc43"
-        clock_06: "\udb85\udc44"
-        clock_07: "\udb85\udc45"
-        clock_08: "\udb85\udc46"
-        clock_09: "\udb85\udc47"
-        clock_10: "\udb85\udc48"
-        clock_11: "\udb85\udc49"
-        clock_12: "\udb85\udc4a"
-        clock_13: "\udb85\udc3f"
-        clock_14: "\udb85\udc40"
-        clock_15: "\udb85\udc41"
-        clock_16: "\udb85\udc42"
-        clock_21: "\udb85\udc47"
-        clock_22: "\udb85\udc48"
-        clock_23: "\udb85\udc49"
       alarm_icons:
-        enabled: "\uf0f3"
-        disabled: "\uf0a2"
-        snooze: "\uf1f6"
+        enabled: "\uF0F3"
+        disabled: "\uF0A2"
+        snooze: "\uF1F6"
       calendar:
         blur: true
         round_corners: true
-        round_corners_type: "normal"
-        border_color: "system"
-        alignment: "center"
-        direction: "down"
-        offset_top: 6
+        round_corners_type: normal
+        border_color: None
+        alignment: center
+        direction: down
+        offset_top: 10
         offset_left: 0
         show_holidays: false
-        show_week_numbers: true
-        show_years: true
-        country_code: "IN"
-        holiday_color: "#FF6464"
+        show_week_numbers: false
+        show_years: false
+        country_code: CA
+        holiday_color: '#FF6464'
         extended: false
+        subdivision: 'ON'
       callbacks:
-        on_left: "toggle_calendar"
-        on_middle: "next_timezone"
-        on_right: "toggle_label"
-
+        on_left: toggle_calendar
+        on_middle: next_timezone
+        on_right: toggle_label
   komorebi_workspaces:
-    type: "komorebi.workspaces.WorkspaceWidget"
+    type: komorebi.workspaces.WorkspaceWidget
     options:
-      label_offline: "\u26a1 Offline"
-      label_workspace_btn: "\udb81\udc3d"
-      label_workspace_active_btn: ""
-      label_workspace_populated_btn: "\udb81\udc3e"
-      label_default_name: "{index}"
+      label_offline: "\u26A1 Offline"
+      label_workspace_btn: ''
+      label_workspace_active_btn: ''
+      label_workspace_populated_btn: ''
+      label_default_name: '{index}'
       label_zero_index: false
       hide_empty_workspaces: false
-      hide_if_offline: false
-
+      hide_if_offline: true
+      enable_scroll_switching: true
   volume:
-    type: "yasb.volume.VolumeWidget"
+    type: yasb.volume.VolumeWidget
     options:
-      label: "<span>{icon}</span> {level}"
-      label_alt: "{volume}"
+      label: <span>{icon}</span> {level}
+      label_alt: '{volume}'
       tooltip: false
       icons:
-        - "\ueee8"  # muted
-        - "\uf026"  # 0-10%
-        - "\uf027"  # 11-30%
-        - "\uf027"  # 31-60%
-        - "\uf028"  # 61-100%
+      - "\uEEE8"
+      - "\uF026"
+      - "\uF027"
+      - "\uF027"
+      - "\uF028"
       callbacks:
-        on_right: "exec cmd.exe /c start ms-settings:sound"
-
+        on_right: exec cmd.exe /c start ms-settings:sound
   power_menu:
-    type: "yasb.power_menu.PowerMenuWidget"
+    type: yasb.power_menu.PowerMenuWidget
     options:
-      label: "\uf011"
+      label: "\uF011"
       uptime: true
       blur: false
       blur_background: true
-      animation_duration: 250 # milliseconds
-      button_row: 5 # number of buttons in row, min 1 max 5
+      animation_duration: 250
+      button_row: 5
       buttons:
-        signout: ["\udb80\udf43", "Sign out"]
-        shutdown: ["\uf011", "Shut Down"]
-        restart: ["\uead2", "Restart"]
-        hibernate: ["\uf28e", "Hibernate"]
-        cancel: ["\udb81\udf3a", "Cancel"]
-
+        signout:
+        - "\uDB80\uDF43"
+        - Sign out
+        shutdown:
+        - "\uF011"
+        - Shut Down
+        restart:
+        - "\uEAD2"
+        - Restart
+        hibernate:
+        - "\uF28E"
+        - Hibernate
+        cancel:
+        - "\uDB81\uDF3A"
+        - Cancel
   memory:
-    type: "yasb.memory.MemoryWidget"
+    type: yasb.memory.MemoryWidget
     options:
-      label: "<span>\uefc5</span> {virtual_mem_free}"
-      label_alt: "<span>\uefc5</span> VIRT: {virtual_mem_percent}% SWAP: {swap_mem_percent}%"
+      label: "<span>\uEFC5</span> {virtual_mem_free}"
+      label_alt: "<span>\uEFC5</span> VIRT: {virtual_mem_percent}% SWAP: {swap_mem_percent}%"
       update_interval: 5000
       callbacks:
-        on_left: "toggle_menu"
-        on_middle: "do_nothing"
-        on_right: "toggle_label"
+        on_left: toggle_menu
+        on_middle: do_nothing
+        on_right: toggle_label
       menu:
         enabled: true
         show_graph: true
         show_graph_grid: true
         graph_history_size: 60
-
   wallpapers:
-    type: "yasb.wallpapers.WallpapersWidget"
+    type: yasb.wallpapers.WallpapersWidget
     options:
-      label: "<span>\udb83\ude09</span>"
-      image_path: "C:\\Users\\{Username}\\Pictures\\Wallpapers"
-      change_automatically: false # automatically change wallpaper
-      update_interval: 60 # if change_automatically is true, interval in seconds
+      label: "<span>\uDB83\uDE09</span>"
+      image_path: C:\Users\{Username}\Pictures\Wallpapers
+      change_automatically: false
+      update_interval: 60
       tooltip: false
       engine:
         enabled: true
-        animation: "circle" # circle/slide_top/diamond/split
+        animation: circle
       gallery:
         enabled: true
         blur: true
         image_width: 220
         image_per_page: 6
-        gallery_columns: 0 # 0 = auto, matches image_per_page for a single row
-        horizontal_position: "center" # left/center/right
-        vertical_position: "center" # top/center/bottom
-        position_offset: 0 # minimum gap (px) from screen edges
-        respect_work_area: true # clamp to OS work area (avoids taskbar)
+        gallery_columns: 0
+        horizontal_position: center
+        vertical_position: center
+        position_offset: 0
+        respect_work_area: true
         show_buttons: false
-        orientation: "portrait"
+        orientation: portrait
         image_spacing: 8
         lazy_load: true
         lazy_load_fadein: 400
         image_corner_radius: 12
-      # Note: do not use run_after if you don't know what it does
-      run_after: # list of functions to run after wallpaper is updated
-        - "wal -s -t -e -q -n -i {image}"
-        - "cmd.exe /c start /min powershell ./yasb.ps1"
       callbacks:
-        on_left: "toggle_gallery"
-        on_middle: "do_nothing"
-        on_right: "change_wallpaper"
-
+        on_left: toggle_gallery
+        on_middle: do_nothing
+        on_right: change_wallpaper
   taskbar:
-    type: "yasb.taskbar.TaskbarWidget"
+    type: yasb.taskbar.TaskbarWidget
     options:
       icon_size: 20
       tooltip: false
       show_only_visible: false
       strict_filtering: true
       monitor_exclusive: false
-      animation:
-        enabled: true
-        duration: 200
       preview:
         enabled: false
         width: 240
@@ -204,24 +194,23 @@ widgets:
         margin: 8
       title_label:
         enabled: false
-        show: "always"
+        show: always
         min_length: 10
         max_length: 30
       ignore_apps:
         processes: []
         titles: []
         classes: []
-
   battery:
-    type: "yasb.battery.BatteryWidget"
+    type: yasb.battery.BatteryWidget
     options:
-      label: "<span>{icon}</span> {percent}%"
-      label_alt: "<span>{icon}</span> {percent}% | {power}W | {time_remaining}"
+      label: <span>{icon}</span> {percent}%
+      label_alt: <span>{icon}</span> {percent}% | {power}W | {time_remaining}
       update_interval: 5000
       time_remaining_natural: false
       hide_unsupported: true
       charging_options:
-        icon_format: "{charging_icon}"
+        icon_format: '{charging_icon}'
         blink_charging_icon: true
         blink_interval: 500
       status_thresholds:
@@ -231,58 +220,55 @@ widgets:
         high: 95
         full: 100
       status_icons:
-        icon_charging: "\uf0e7"
-        icon_critical: "\uf244"
-        icon_low: "\uf243"
-        icon_medium: "\uf242"
-        icon_high: "\uf241"
-        icon_full: "\uf240"
-
+        icon_charging: "\uF0E7"
+        icon_critical: "\uF244"
+        icon_low: "\uF243"
+        icon_medium: "\uF242"
+        icon_high: "\uF241"
+        icon_full: "\uF240"
   systray:
-    type: "yasb.systray.SystrayWidget"
+    type: yasb.systray.SystrayWidget
     options:
-      class_name: "systray"
-      label_collapsed: "▼"
-      label_expanded: "▶"
-      label_position: "right"
+      class_name: systray
+      label_collapsed: "\u25BC"
+      label_expanded: "\u25B6"
+      label_position: right
       icon_size: 16
-      pin_click_modifier: "alt"
+      pin_click_modifier: alt
       show_in_popup: true
       icons_per_row: 4
       popup:
         blur: true
         round_corners: true
-        round_corners_type: "normal"
+        round_corners_type: normal
         border_color: None
-        alignment: "center"
-        direction: "down"
+        alignment: center
+        direction: down
         offset_top: 6
         offset_left: 0
-
   traffic:
-    type: "yasb.traffic.TrafficWidget"
+    type: yasb.traffic.TrafficWidget
     options:
-      label: "\ueb01 \ueab4 {download_speed} | \ueab7 {upload_speed}"
-      label_alt: "Download {download_speed} | Upload {upload_speed}"
+      label: "\uEB01 \uEAB4 {download_speed} | \uEAB7 {upload_speed}"
+      label_alt: Download {download_speed} | Upload {upload_speed}
       update_interval: 1000
       menu:
         blur: true
         round_corners: true
-        round_corners_type: "normal"
-        border_color: "system"
-        alignment: "left"
-        direction: "down"
+        round_corners_type: normal
+        border_color: system
+        alignment: left
+        direction: down
         offset_top: 6
         offset_left: 0
       callbacks:
-        on_left: "toggle_menu"
-        on_right: "toggle_label"
-
+        on_left: toggle_menu
+        on_right: toggle_label
   quick_launch:
-    type: "yasb.quick_launch.QuickLaunchWidget"
+    type: yasb.quick_launch.QuickLaunchWidget
     options:
-      label: "<span>\uf002</span>"
-      search_placeholder: "Search applications..."
+      label: "<span>\uF002</span>"
+      search_placeholder: Search applications...
       max_results: 30
       show_icons: true
       icon_size: 32
@@ -291,11 +277,118 @@ widgets:
         height: 480
         blur: true
         round_corners: true
-        round_corners_type: "normal"
-        border_color: "system"
+        round_corners_type: normal
+        border_color: system
         dark_mode: true
       callbacks:
-        on_left: "toggle_quick_launch"
+        on_left: toggle_quick_launch
       keybindings:
-        - keys: "alt+space"
-          action: "toggle_quick_launch"
+      - keys: alt+space
+        action: toggle_quick_launch
+  workspaces_left:
+    type: yasb.grouper.GrouperWidget
+    options:
+      class_name: workspace-left
+      hide_empty: true
+      widgets:
+      - komorebi_workspaces
+  workspaces_right:
+    type: yasb.grouper.GrouperWidget
+    options:
+      class_name: workspace-right
+      hide_empty: true
+      widgets:
+      - komorebi_workspaces
+  control_center:
+    type: yasb.control_center.ControlCenterWidget
+    options:
+      label: "<span>\uE713</span>"
+      tooltip: true
+      popup:
+        blur: true
+        round_corners: true
+        round_corners_type: normal
+        border_color: None
+        alignment: center
+        direction: down
+        offset_top: 10
+      sections_order:
+      - system_controls
+      - quick_actions
+      - sliders
+      - media
+      - power
+      sections:
+        quick_actions:
+          columns: 3
+          actions:
+          - id: wifi
+            label: Wi-Fi
+            icon: "\uE701"
+            command: ms-settings:network-wifi
+          - id: bluetooth
+            label: Bluetooth
+            icon: "\uE702"
+            command: ms-settings:bluetooth
+          - id: night_light
+            label: Night light
+            icon: "\uE708"
+            command: ms-settings:nightlight
+          - id: screenshot
+            label: Screenshot
+            icon: "\uE91B"
+          - id: terminal
+            label: Terminal
+            icon: "\uE756"
+            command: cmd.exe
+          - id: task_manager
+            label: System
+            icon: "\uE9D9"
+            command: taskmgr.exe
+        sliders:
+          brightness:
+            icon: "\uE706"
+            show_source_selector: true
+          volume:
+            icon: "\uE767"
+            show_source_selector: true
+          microphone:
+            icon: "\uE720"
+            show_slider: false
+        media:
+          thumbnail_size: 64
+          thumbnail_radius: 12
+      callbacks:
+        on_left: toggle_menu
+      keybindings:
+      - keys: win+alt+c
+        action: toggle_menu
+  notifications:
+    type: yasb.notifications.NotificationsWidget
+    options:
+      label: <span>{icon}</span>
+      label_alt: '{count}'
+      hide_empty: false
+      tooltip: true
+      icons:
+        new: "\uEA8F"
+        default: "\uE7F4"
+      callbacks:
+        on_left: toggle_notification
+        on_right: toggle_label
+  launch_tools:
+    type: yasb.grouper.GrouperWidget
+    options:
+      class_name: launch-tools
+      widgets:
+      - quick_launch
+      - taskbar
+  system_tools:
+    type: yasb.grouper.GrouperWidget
+    options:
+      class_name: system-tools
+      widgets:
+      - memory
+      - traffic
+      - battery
+      - systray
